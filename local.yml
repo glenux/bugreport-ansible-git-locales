@@ -1,0 +1,14 @@
+---
+# vim: set ts=2 sw=2 et ft=ansible:
+- hosts: all
+  remote_user: root
+  tasks:
+    - name: Fetch YouCompleteMe plugin for vim
+      git:
+        repo=https://github.com/Valloric/YouCompleteMe.git
+        dest=~/YouCompleteMe-demo
+        update=yes
+        accept_hostkey=yes
+      become: true
+      become_user: warbrain
+

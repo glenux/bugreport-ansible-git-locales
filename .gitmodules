@@ -1,0 +1,9 @@
+[submodule "roles/glenux.vim"]
+	path = roles/glenux.vim
+	url = git@github.com:glenux/ansible-role-glenux-vim.git
+[submodule "roles/yaegashi.blockinfile"]
+	path = roles/yaegashi.blockinfile
+	url = https://github.com/yaegashi/ansible-role-blockinfile
+[submodule "roles/zzet.rbenv"]
+	path = roles/zzet.rbenv
+	url = https://github.com/zzet/ansible-rbenv-role.git
