@@ -1,4 +1,4 @@
 #!/bin/sh
 
-ansible-playbook -i inventories/default local.yml -vv
+ansible-playbook -i inventory -c local local.yml 
 

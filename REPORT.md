@@ -14,7 +14,7 @@ Default debian configuration for ansible (nothing changed).
 
 Here is the diff with the current upstream version : 
 
-    $ diff -Nur examples/ansible.cfg /etc/ansible/ansible.cfg |sed -e 's/^/    /'
+    $ diff -Nur examples/ansible.cfg /etc/ansible/ansible.cfg
     --- examples/ansible.cfg    2015-11-11 11:23:15.701009848 +0100
     +++ /etc/ansible/ansible.cfg        2015-09-04 01:03:08.000000000 +0200
     @@ -11,18 +11,18 @@
@@ -230,18 +230,92 @@ Here is the diff with the current upstream version :
 
 Debian stretch/sid
 
+    $ locale
+    LANG=fr_FR.UTF-8
+    LANGUAGE=fr
+    LC_CTYPE="fr_FR.UTF-8"
+    LC_NUMERIC="fr_FR.UTF-8"
+    LC_TIME="fr_FR.UTF-8"
+    LC_COLLATE="fr_FR.UTF-8"
+    LC_MONETARY="fr_FR.UTF-8"
+    LC_MESSAGES="fr_FR.UTF-8"
+    LC_PAPER="fr_FR.UTF-8"
+    LC_NAME="fr_FR.UTF-8"
+    LC_ADDRESS="fr_FR.UTF-8"
+    LC_TELEPHONE="fr_FR.UTF-8"
+    LC_MEASUREMENT="fr_FR.UTF-8"
+    LC_IDENTIFICATION="fr_FR.UTF-8"
+    LC_ALL=fr_FR.UTF-8
+
 ##### Summary:
 
-Please summarize your request in this space.  You will earn bonus points for being succinct, but please add enough detail so we can understand the request.  Thanks!
+- The git module of ansible is unable to fetch submodule updates
+- The module tries to match "Entering "  (https://github.com/ansible/ansible-modules-core/blob/devel/source_control/git.py#L301)
+- It gets "Entrée dans " on my system
+- /usr/bin/git output is translated according to locales (fr_FR) but the git module does not seem to take that in account.
 
 ##### Steps To Reproduce:
 
-If this is a bug ticket, please enter the steps you use to reproduce the problem in the space below.  If this is a feature request, please enter the steps you would use to use the feature.  If an example playbook is useful, please include a short reproducer inline, indented by four spaces.  If a longer one is necessary, linking to one uploaded to gist.github.com would be great.  Much appreciated!
+Download and run the following demo code :
+
+    git clone https://github.com/glenux/bugreport-ansible-git-locales.git
+    cd bugreport-ansible-git-locales
+    $EDITOR local.yml  # <== change the "become_user:" line with your own username
+    ./local.sh
+
+It will do the following steps :
+
+- connect on root@localhost
+- download/update the YouCompleteMe plugin for vim in the ~/YouCompleteMe-demo directory of target user
 
 ##### Expected Results:
 
-Please enter your expected results in this space.  When running the steps supplied above in the previous section, what did you expect to happen?  If showing example output, please indent your output by four spaces so it will render correctly in GitHub's viewer thingy.
+Every run of demo code should be OK (ie: ok=2 changed=1)
 
 ##### Actual Results:
 
-Please enter your actual results in this space.  When running the steps supplied above, what actually happened?  If you are showing example output, please indent your output by four spaces so it will render correctly in GitHub.  Thanks again!
+The first run of demo code wil be OK. The second run will FAIL with the following error :
+
+> msg: Unable to parse submodule hash line: Entrée dans 'third_party/requests'
+
+
+First run of demo code : 
+
+    $ ./local.sh
+    
+    PLAY [all] ******************************************************************** 
+    
+    GATHERING FACTS *************************************************************** 
+    <localhost> REMOTE_MODULE setup
+    ok: [localhost]
+    
+    TASK: [Fetch YouCompleteMe plugin for vim] ************************************ 
+    <localhost> REMOTE_MODULE git repo=https://github.com/Valloric/YouCompleteMe.git dest=~/YouCompleteMe-demo update=yes accept_hostkey=yes
+    changed: [localhost] => {"after": "65cc309421b199a2bde68b97105537d5c489d401", "before": null, "changed": true}
+    
+    PLAY RECAP ******************************************************************** 
+    localhost                  : ok=2    changed=1    unreachable=0    failed=0 
+
+
+Second run :
+
+    $ ./local.sh
+    
+    PLAY [all] ******************************************************************** 
+    
+    GATHERING FACTS *************************************************************** 
+    <localhost> REMOTE_MODULE setup
+    ok: [localhost]
+    
+    TASK: [Fetch YouCompleteMe plugin for vim] ************************************ 
+    <localhost> REMOTE_MODULE git repo=https://github.com/Valloric/YouCompleteMe.git dest=~/YouCompleteMe-demo update=yes accept_hostkey=yes
+    failed: [localhost] => {"failed": true}
+    msg: Unable to parse submodule hash line: Entrée dans 'third_party/requests'
+    
+    FATAL: all hosts have already failed -- aborting
+    
+    PLAY RECAP ******************************************************************** 
+               to retry, use: --limit @/home/warbrain/local.retry
+    
+    localhost                  : ok=1    changed=0    unreachable=0    failed=1  
+
