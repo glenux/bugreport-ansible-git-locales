@@ -21,12 +21,12 @@ ENV LC_ALL fr_FR.UTF-8
 
 # Install ansible from Git
 
-RUN git clone http://github.com/ansible/ansible.git /usr/share/local/ansible
-WORKDIR /usr/share/local/ansible
+RUN git clone http://github.com/ansible/ansible.git /usr/local/ansible
+WORKDIR /usr/local/ansible
 RUN git submodule update --init --recursive
-ENV PATH /usr/share/local/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
-ENV ANSIBLE_LIBRARY /usr/share/local/ansible/library
-ENV PYTHONPATH /usr/share/local/ansible/lib:$PYTHON_PATH
+ENV PATH /usr/local/ansible/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV ANSIBLE_LIBRARY /usr/local/ansible/library
+ENV PYTHONPATH /usr/local/ansible/lib:$PYTHON_PATH
 
 # Add demo playbook
 
