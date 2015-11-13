@@ -4,13 +4,13 @@ Ansible bug demo
 
 First type the commands below :
 
-    $ vagrant up
-    $ vagrant ssh
-    $ sudo su
+    user@host$ vagrant up
+    user@host$ vagrant ssh
+    vagrant@vagrant$ sudo su
 
 Then run ansible playbook once :
 
-    # ./local.sh 
+    root@vavrant# ./local.sh 
     [...]
     TASK [Fetch YouCompleteMe plugin for vim] **************************************
     changed: [localhost]
@@ -21,7 +21,7 @@ Then run ansible playbook once :
 
 Then a second time : 
 
-    # ./local.sh 
+    root@vavrant# ./local.sh 
     [...]
     TASK [Fetch YouCompleteMe plugin for vim] **************************************
     fatal: [localhost]: FAILED! => {"changed": false, "failed": true, "msg": "Unable to parse submodule hash line: Entrée dans 'third_party/requests'"}
