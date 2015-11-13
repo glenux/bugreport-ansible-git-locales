@@ -16,13 +16,13 @@ apt-get install -y locales gettext gettext-base \
 #
 # Add fake git to dump env (if needed)
 #
-# BASE=/vagrant
-# cp $BASE/git.sh /usr/bin/git.fake
-# chmod 755 /usr/bin/git.fake
-# if [ ! -f /usr/bin/git.real ]; then
-# 	mv /usr/bin/git /usr/bin/git.real
-# 	ln -s /usr/bin/git.fake /usr/bin/git
-# fi
+BASE=/vagrant
+cp $BASE/git.sh /usr/bin/git.fake
+chmod 755 /usr/bin/git.fake
+if [ ! -f /usr/bin/git.real ]; then
+	mv /usr/bin/git /usr/bin/git.real
+	ln -s /usr/bin/git.fake /usr/bin/git
+fi
 
 
 # Default  locales  first
